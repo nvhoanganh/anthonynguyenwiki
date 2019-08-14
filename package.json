@@ -1,0 +1,19 @@
+{
+  "name": "wiki",
+  "version": "1.0.0",
+  "description": "--- home: true heroImage: /nasa_transonic_tunnel.jpg actionText: Get Started → actionLink: /GettingStarted.md features: - title: Simplicity First   details: Minimal setup with markdown-centered project structure helps you focus on writing. - title: Vue-Powered   details: Enjoy the dev experience of Vue + webpack, use Vue components in markdown, and develop custom themes with Vue. - title: Performant   details: VuePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded. footer: MIT Licensed | Copyright © 2018-present Evan You ---",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build",
+    "dockerbuild": "docker build --rm -f Dockerfile -t nvhoanganh1909/wiki:latest .",
+    "dockerrun": "docker run -d --rm -p 4200:80 nvhoanganh1909/wiki:latest",
+    "dockerstop": " docker stop $(docker ps -q --filter ancestor=nvhoanganh1909/wiki:latest)"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.11.1",
+    "vuepress": "^1.0.3"
+  }
+}
