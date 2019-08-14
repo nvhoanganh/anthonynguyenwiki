@@ -1,0 +1,43 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'Install npm'
+
+- script: |
+    npm run build
+  displayName: 'build vuepress'
+
+- script: |
+    docker build --rm -f Dockerfile -t nvhoanganh1909/wiki:v$(Build.BuildId) .
+  displayName: 'build docker image'
+
+- script: |
+    docker login -u nvhoanganh1909 -p $(dockerpwd)
+    docker push nvhoanganh1909/wiki:v$(Build.BuildId)
+  displayName: 'push docker image to Docker Hub'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '.vuepress/dist'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/wiki.zip'
+    replaceExistingArchive: true
+  displayName: 'archive files'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: MyBuildOutputs
+  displayName: 'Publish artifacts'
